@@ -40,8 +40,8 @@ exports.createContact = async email => {
     }
 };
 
-exports.addContactToCampaign = async (contactID, campaignID) => {
-    const url = `${process.env.url}/contacts/${contactID}/campaigns/${campaignID}`;
+exports.addContactToWorkflow = async (contactID, workflowID) => {
+    const url = `${process.env.url}/contacts/${contactID}/workflow/${workflowID}`;
     try{
         const response = await axios({
             method: 'post',
@@ -51,7 +51,7 @@ exports.addContactToCampaign = async (contactID, campaignID) => {
         return true
     }
     catch (error){
-        console.log(`Error adding to campaign: ${error.response.status}`);
+        console.log(`Error adding to workflow: ${error.response.status}`);
         console.log(error.response.data);
         return false;
     }
