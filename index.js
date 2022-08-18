@@ -32,19 +32,19 @@ const startCampaign = async (params, res) => {
 app.post('/post', (req, res, next) => {
     console.log('POST URL');
     console.log(req.query);
-    return startCampaign(req.query);
+    return startCampaign(req.query, res);
 });
 
 app.get('/get', (req, res, next) => {
     console.log('GET URL');
     console.log(req.query);
-    return startCampaign(req.query);
+    return startCampaign(req.query, res);
 });
 
 app.post('/lead/post', (req, res, next) => {
     console.log('Lead POST URL');
     console.log(req.body.customData);
-    return startCampaign(req.body.customData);
+    return startCampaign(req.body.customData, res);
 });
 
 app.listen(port, function() {
