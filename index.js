@@ -8,20 +8,21 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-const calls = require('./calls');
+const Call = require('./calls');
 
 const addToWorkflow = async (params, res) => {
     const email = params.email;
     const workflowID = params.workflow;
-    let message = ''
-    let contact = await calls.lookUpContact(email);
+    let message = '';
+    const apiCall = new Call(params.key, params.email, params.workflow);
+    let contact = await apiCall.lookUpContact();
     if (!contact){
-        contact = await calls.createContact(email);
+        contact = await apiCall.createContact();
         console.log(`Created contact ${contact}`);
     }
     else contact = contact[0];
     console.log(contact);
-    if (await calls.addContactToWorkflow(contact.id, workflowID)){
+    if (await apiCall.addContactToWorkflow(contact.id)){
         message = 'Contact added to workflow';
     }
     else{
