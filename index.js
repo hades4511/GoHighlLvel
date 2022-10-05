@@ -9,6 +9,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 const Call = require('./calls');
+const InfusionSoftCall = require('./infusionSoftCalls');
 
 const addToWorkflow = async (params, res) => {
     const email = params.email;
@@ -32,6 +33,52 @@ const addToWorkflow = async (params, res) => {
     return res.json({message: message});
 };
 
+const addIDToTag = async (params, res) => {
+    let message = '';
+    if (!params.givenName || !params.familyName || !params.email || !params.phone || !params.tagID || !params.homeOwnership){
+        return res.status(400).json({message: 'Some parameters are missing!!'})
+    }
+    const apiCall = new InfusionSoftCall(
+        params.givenName, 
+        params.familyName, 
+        params.email,
+        params.phone,
+        params.homeOwnership,
+        params.tagID
+    );
+    let contact = await apiCall.getContact();
+    console.log(contact)
+    if (!contact){
+        return res.status(400).json({message: 'Invalid parameters'});
+    }
+    if (await apiCall.addTagToContact(contact.id)){
+        message = 'Tag added to contact';
+    }
+    else{
+        message = 'Error in adding tag to contact.';
+    }
+    console.log(message);
+    return res.json({message: message});
+};
+
+app.post('/infosoft/post', (req, res, next) => {
+    console.log('InfoSoft POST URL');
+    console.log(req.query);
+    return addIDToTag(req.query, res);
+});
+
+app.get('/infosoft/get', (req, res, next) => {
+    console.log('InfoSoft GET URL');
+    console.log(req.query);
+    return addIDToTag(req.query, res);
+});
+
+app.post('/infosoft/lead/post', (req, res, next) => {
+    console.log('InfoSoft Lead POST URL');
+    console.log(req.body.customData);
+    return addIDToTag(req.body.customData, res);
+});
+
 app.post('/post', (req, res, next) => {
     console.log('POST URL');
     console.log(req.query);
@@ -42,31 +89,6 @@ app.get('/get', (req, res, next) => {
     console.log('GET URL');
     console.log(req.query);
     return addToWorkflow(req.query, res);
-});
-
-app.get('/get/time', (req, res, next) => {
-    const toIsoString = date => {
-        const tzo = -date.getTimezoneOffset(),
-            dif = tzo >= 0 ? '+' : '-',
-            pad = function(num) {
-                return (num < 10 ? '0' : '') + num;
-            };
-      
-        return date.getFullYear() +
-            '-' + pad(date.getMonth() + 1) +
-            '-' + pad(date.getDate()) +
-            'T' + pad(date.getHours()) +
-            ':' + pad(date.getMinutes()) +
-            ':' + pad(date.getSeconds()) +
-            dif + pad(Math.floor(Math.abs(tzo) / 60)) +
-            ':' + pad(Math.abs(tzo) % 60);
-    }
-    const currentTime = new Date();
-    const updated = toIsoString(new Date(currentTime.getTime() + 1000 * 60));
-    return res.json({
-        'time': currentTime,
-        'updatedTime': updated
-    });
 });
 
 app.post('/lead/post', (req, res, next) => {
