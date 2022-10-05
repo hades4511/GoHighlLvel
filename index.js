@@ -61,6 +61,12 @@ const addIDToTag = async (params, res) => {
     return res.json({message: message});
 };
 
+app.post('/infosoft/lead/post', (req, res, next) => {
+    console.log('InfoSoft Lead POST URL');
+    console.log(req.body.customData);
+    return addIDToTag(req.body.customData, res);
+});
+
 app.post('/infosoft/post', (req, res, next) => {
     console.log('InfoSoft POST URL');
     console.log(req.query);
@@ -71,12 +77,6 @@ app.get('/infosoft/get', (req, res, next) => {
     console.log('InfoSoft GET URL');
     console.log(req.query);
     return addIDToTag(req.query, res);
-});
-
-app.post('/infosoft/lead/post', (req, res, next) => {
-    console.log('InfoSoft Lead POST URL');
-    console.log(req.body.customData);
-    return addIDToTag(req.body.customData, res);
 });
 
 app.post('/post', (req, res, next) => {
