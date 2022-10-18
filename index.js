@@ -22,7 +22,6 @@ const addToWorkflow = async (params, res) => {
         console.log(`Created contact ${contact}`);
     }
     else contact = contact[0];
-    console.log(contact);
     if (await apiCall.addContactToWorkflow(contact.id)){
         message = 'Contact added to workflow';
     }
@@ -47,7 +46,6 @@ const addIDToTag = async (params, res) => {
         params.tagID
     );
     let contact = await apiCall.getContact();
-    console.log(contact)
     if (!contact){
         return res.status(400).json({message: 'Invalid parameters'});
     }
