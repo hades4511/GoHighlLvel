@@ -14,6 +14,9 @@ const InfusionSoftCall = require('./infusionSoftCalls');
 const addToWorkflow = async (params, res) => {
     const email = params.email;
     const workflowID = params.workflow;
+    if (!params.email || !params.workflow){
+        return res.status(400).json({message: 'Some parameters are missing!!'})
+    }
     let message = '';
     const apiCall = new Call(params.key, params.email, params.workflow);
     let contact = await apiCall.lookUpContact();
