@@ -20,7 +20,7 @@ const addToWorkflow = async (params, res) => {
     let message = '';
     const apiCall = new Call(params.key, params.email, params.workflow);
     let contact = await apiCall.lookUpContact();
-    if (!contact.length){
+    if (!contact || !contact.length){
         contact = await apiCall.createContact();
         console.log(`Created contact ${contact}`);
     }
