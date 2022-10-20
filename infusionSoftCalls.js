@@ -102,7 +102,7 @@ module.exports = class InfusionSoftCall{
             return true
         }
         catch (error){
-            console.log(`Error adding to workflow: ${error.response.status}`);
+            console.log(`Error adding tag to contact: ${error.response.status}`);
             console.log(error.response.data);
             return false;
         }
