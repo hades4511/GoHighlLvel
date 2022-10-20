@@ -20,7 +20,7 @@ const addToWorkflow = async (params, res) => {
     let message = '';
     const apiCall = new Call(params.key, params.email, params.workflow);
     let contact = await apiCall.lookUpContact();
-    if (!contact){
+    if (!contact.length){
         contact = await apiCall.createContact();
         console.log(`Created contact ${contact}`);
     }
@@ -64,10 +64,8 @@ const addIDToTag = async (params, res) => {
 
 app.post('/infosoft/lead/post', (req, res, next) => {
     console.log('InfoSoft Lead POST URL');
-    console.log(req);
-    console.log(req.body);
-    console.log(req.query);
-    return addIDToTag(req.body, res);
+    console.log(req.body.customData);
+    return addIDToTag(req.body.customData, res);
 });
 
 app.post('/infosoft/post', (req, res, next) => {
