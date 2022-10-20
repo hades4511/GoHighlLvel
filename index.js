@@ -65,8 +65,8 @@ const addIDToTag = async (params, res) => {
 app.post('/infosoft/lead/post', (req, res, next) => {
     console.log('InfoSoft Lead POST URL');
     console.log(req.body);
-    console.log(req.body.location);
-    return addIDToTag(req.body.location, res);
+    console.log(req.body);
+    return addIDToTag(req.body, res);
 });
 
 app.post('/infosoft/post', (req, res, next) => {
