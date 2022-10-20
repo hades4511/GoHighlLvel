@@ -25,7 +25,10 @@ const addToWorkflow = async (params, res) => {
         console.log(`Created contact ${contact}`);
     }
     else contact = contact[0];
-    if (await apiCall.addContactToWorkflow(contact.id)){
+    if (!contact){
+        message = "Error creating/finding contact" 
+    }
+    else if (await apiCall.addContactToWorkflow(contact.id)){
         message = 'Contact added to workflow';
     }
     else{
